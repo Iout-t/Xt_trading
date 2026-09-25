@@ -79,3 +79,7 @@ The proxy exposes:
 - `GET /api/market?symbol=USD%2FAUD&interval=15min` for candles and the current reference price.
 
 Signals remain **analysis only**. The app does not connect to a broker, place orders, transmit trades, or claim guaranteed performance. Validate data freshness, subscription access, spread, liquidity, and risk independently before acting on any signal.
+
+### Android cleartext note
+
+The debug app currently permits cleartext traffic so an Android emulator can reach the local development proxy at `http://10.0.2.2:8787`. Use an HTTPS proxy URL for a physical device or production deployment and remove `android:usesCleartextTraffic="true"` from the manifest before a production release.

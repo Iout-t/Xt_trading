@@ -4,6 +4,7 @@
         android:allowBackup="true"
         android:label="MetaEnsemble FX"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MetaEnsemble">
         <activity
             android:name=".MainActivity"
