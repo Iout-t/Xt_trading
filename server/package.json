@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Secure Twelve Data market-data proxy for Xt Trading signal generation",
   "scripts": {
-    "start": "node server.js",
+    "start": "node --env-file=.env server.js",
     "check": "node --check server.js"
   },
   "engines": {
