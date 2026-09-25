@@ -14,7 +14,7 @@ This artifact is a **reconstructed implementation** of the supplied V2.3 handoff
 
 ## Data source
 
-The default adapter targets OANDA v20-compatible REST endpoints for account-specific candles and current pricing. Current official documentation confirms M5/H1/M15 candle granularities, up to 5000 candles per request, account pricing, and streaming pricing endpoints. Credentials are environment variables; nothing is embedded.
+The default adapter targets Twelve Data REST endpoints for EUR/USD, GBP/USD, and USD/JPY candles and quotes. It requests M5, M15, and H1 time series with UTC timestamps and up to 5000 data points per request. Twelve Data does not expose a broker account summary, so position sizing uses the explicitly configured paper-account values `PAPER_ACCOUNT_NAV` and `PAPER_MARGIN_AVAILABLE`. The API key is supplied through the environment; nothing is embedded.
 
 ## Run
 
@@ -32,11 +32,14 @@ Or:
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-Required for live mode:
+Required for signal mode:
 
-- `OANDA_API_TOKEN`
-- `OANDA_ACCOUNT_ID`
-- `OANDA_BASE_URL` (defaults to the documented REST host)
+- `TWELVE_DATA_API_KEY`
+- `PAPER_ACCOUNT_NAV` (defaults to `10000`)
+- `PAPER_MARGIN_AVAILABLE` (defaults to the paper NAV)
+- `TWELVE_DATA_SPREAD` (the configured spread estimate used because Twelve Data quote responses do not provide bid/ask)
+
+This is a Twelve Data adaptation of the supplied OANDA-oriented artifact. It is signal-only and never submits orders.
 
 The first live evaluation trains the reconstructed RF from broker history if the cached model is absent. No signal is produced until training succeeds and all required data are fresh.
 

@@ -1,12 +1,12 @@
 from datetime import datetime,timezone
 import numpy as np
 from app.config import BASE, MODULES
-from app.oanda import OandaClient
+from app.twelvedata import TwelveDataClient
 from app.features import add_features,candidate_rows,FEATURE_COLS
 from app.model import BaselineModel
 from app.hq import hq_gates
 
-def fresh_client(): return OandaClient()
+def fresh_client(): return TwelveDataClient()
 
 def _size_units(account,pair,entry,stop,risk_frac,leverage_cap):
     nav=float(account.get('NAV',account.get('balance',0))); risk=max(0.0,nav*risk_frac); distance=abs(entry-stop)

@@ -32,7 +32,9 @@ MODULES={
 
 MODEL_DIR=Path(os.getenv('MODEL_DIR','./models'))
 MODEL_DIR.mkdir(parents=True,exist_ok=True)
-TOKEN=os.getenv('OANDA_API_TOKEN','')
-ACCOUNT=os.getenv('OANDA_ACCOUNT_ID','')
-BASE_URL=os.getenv('OANDA_BASE_URL','https://api-fxtrade.oanda.com').rstrip('/')
+TWELVE_DATA_API_KEY=os.getenv('TWELVE_DATA_API_KEY','')
+TWELVE_DATA_BASE_URL=os.getenv('TWELVE_DATA_BASE_URL','https://api.twelvedata.com').rstrip('/')
+PAPER_ACCOUNT_NAV=float(os.getenv('PAPER_ACCOUNT_NAV','10000'))
+PAPER_MARGIN_AVAILABLE=float(os.getenv('PAPER_MARGIN_AVAILABLE',str(PAPER_ACCOUNT_NAV)))
+TWELVE_DATA_SPREAD=float(os.getenv('TWELVE_DATA_SPREAD','0.0001'))
 LOOKBACK_M5=int(os.getenv('LOOKBACK_M5','5000')); LOOKBACK_M15=int(os.getenv('LOOKBACK_M15','1200')); LOOKBACK_H1=int(os.getenv('LOOKBACK_H1','600'))
