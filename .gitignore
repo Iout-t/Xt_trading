@@ -1,10 +1,10 @@
-.gradle/
-.idea/
-local.properties
-build/
-app/build/
-*.iml
-.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+models/
 .env
 .env.*
 !.env.example
