@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "com.forex.metaensemble"
     compileSdk = 37
+    val signalProxyUrl = providers.gradleProperty("SIGNAL_PROXY_URL").orElse("http://10.0.2.2:8787").get()
 
     defaultConfig {
         applicationId = "com.forex.metaensemble"
@@ -13,6 +14,7 @@ android {
         targetSdk = 37
         versionCode = 230
         versionName = "2.3.0"
+        buildConfigField("String", "SIGNAL_PROXY_URL", "\"$signalProxyUrl\"")
     }
 
     buildFeatures {
@@ -62,6 +64,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
     implementation("androidx.work:work-runtime-ktx:2.10.1")
 
     testImplementation("junit:junit:4.13.2")

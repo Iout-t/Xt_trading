@@ -54,3 +54,28 @@ The workflow artifact is `app-debug`.
 6. Add a separate, explicitly enabled live-execution layer only after paper validation and human approval.
 
 Never put broker API keys directly in the repository.
+
+## Live market signal mode
+
+The app now supports live analytical signals for provider-supported forex and cryptocurrency instruments through a secure backend proxy. The Android client does not contain the Twelve Data key. It loads the provider instrument catalog, including pairs such as `USD/AUD` and `BTC/USD` when available under the account plan, and polls the proxy every 30 seconds while live updates are enabled.
+
+The proxy is in [`server/`](server/). Configure the secret only in the deployment environment:
+
+```bash
+export TWELVE_DATA_API_KEY="your-secret"
+node server/server.js
+```
+
+Do not commit the real key, place it in an APK, or put it in source files. The GitHub Actions repository secret should be named `TWELVE_DATA_API_KEY`; the running backend must expose the same environment variable. The Android app defaults to `http://10.0.2.2:8787` for an Android emulator. For a deployed HTTPS proxy, build with:
+
+```bash
+gradle -PSIGNAL_PROXY_URL=https://your-proxy.example.com :app:assembleDebug
+```
+
+The proxy exposes:
+
+- `GET /health` for availability checks.
+- `GET /api/instruments` for the normalized forex and crypto catalog.
+- `GET /api/market?symbol=USD%2FAUD&interval=15min` for candles and the current reference price.
+
+Signals remain **analysis only**. The app does not connect to a broker, place orders, transmit trades, or claim guaranteed performance. Validate data freshness, subscription access, spread, liquidity, and risk independently before acting on any signal.

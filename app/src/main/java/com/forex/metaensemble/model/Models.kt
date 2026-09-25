@@ -39,6 +39,7 @@ data class ModuleObservation(
 
 data class EngineDecision(
     val pair: String,
+    val referencePrice: Double,
     val signal: Signal,
     val confidence: Double,
     val sizeMultiplier: Double,

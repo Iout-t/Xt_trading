@@ -8,6 +8,7 @@ import kotlin.math.min
 class DecisionEngine {
     fun compose(
         pair: String,
+        referencePrice: Double,
         baseline: com.forex.metaensemble.model.BaselineProposal,
         observations: List<ModuleObservation>
     ): EngineDecision {
@@ -23,6 +24,7 @@ class DecisionEngine {
         val finalSignal = if (vetoed) Signal.WAIT else baseline.signal
         return EngineDecision(
             pair = pair,
+            referencePrice = referencePrice,
             signal = finalSignal,
             confidence = confidence,
             sizeMultiplier = size,

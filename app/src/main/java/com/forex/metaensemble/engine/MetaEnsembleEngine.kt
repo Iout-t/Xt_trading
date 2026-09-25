@@ -21,6 +21,6 @@ class MetaEnsembleEngine(
     fun evaluate(market: MarketSnapshot): EngineDecision {
         val proposal = baseline.generateProposal(market)
         val observations = modules.map { observer -> observer(market, proposal) }
-        return decisionEngine.compose(market.pair, proposal, observations)
+        return decisionEngine.compose(market.pair, market.lastPrice, proposal, observations)
     }
 }
