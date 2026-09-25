@@ -12,7 +12,7 @@ class LiveMarketClient(private val baseUrl: String) {
     data class Instrument(val symbol: String, val displayName: String, val assetClass: String)
 
     fun instruments(): List<Instrument> {
-        val root = JSONObject(get("/api/instruments"))
+        val root = JSONObject(get("/api/market-data/instruments"))
         val rows = root.optJSONArray("data") ?: JSONArray()
         return buildList {
             for (index in 0 until rows.length()) {
@@ -23,7 +23,7 @@ class LiveMarketClient(private val baseUrl: String) {
     }
 
     fun market(symbol: String, interval: String = "15min"): MarketSnapshot {
-        val path = "/api/market?symbol=${encode(symbol)}&interval=${encode(interval)}"
+        val path = "/api/market-data/market?symbol=${encode(symbol)}&interval=${encode(interval)}"
         val data = JSONObject(get(path)).getJSONObject("data")
         val candlesJson = data.getJSONArray("candles")
         val candles = buildList {

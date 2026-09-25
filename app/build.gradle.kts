@@ -6,14 +6,14 @@ plugins {
 android {
     namespace = "com.forex.metaensemble"
     compileSdk = 37
-    val signalProxyUrl = providers.gradleProperty("SIGNAL_PROXY_URL").orElse("http://10.0.2.2:8787").get()
+    val signalProxyUrl = providers.gradleProperty("SIGNAL_PROXY_URL").orElse("https://3000-iiygy1e5g54v6vskrnnb1-8b383e2c.sg2.manus.computer").get()
 
     defaultConfig {
         applicationId = "com.forex.metaensemble"
         minSdk = 26
         targetSdk = 37
-        versionCode = 231
-        versionName = "2.3.1"
+        versionCode = 232
+        versionName = "2.3.2"
         buildConfigField("String", "SIGNAL_PROXY_URL", "\"$signalProxyUrl\"")
     }
 
