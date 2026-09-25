@@ -75,18 +75,26 @@ function parseTimeSeries(body, symbol) {
   })).filter((candle) => Number.isFinite(candle.close));
 }
 
+function normalizeRequestedSymbol(symbol) {
+  const value = String(symbol || '').trim().toUpperCase().replace(/\s+/g, '');
+  if (value === 'BTCUSD') return 'BTC/USD';
+  if (/^[A-Z]{6}$/.test(value)) return `${value.slice(0, 3)}/${value.slice(3)}`;
+  return value;
+}
+
 async function loadMarket(symbol, interval) {
+  const providerSymbol = normalizeRequestedSymbol(symbol);
   const [series, quote] = await Promise.all([
-    twelveData('/time_series', { symbol, interval, outputsize: 100, timezone: 'UTC' }),
-    twelveData('/quote', { symbol })
+    twelveData('/time_series', { symbol: providerSymbol, interval, outputsize: 100, timezone: 'UTC' }),
+    twelveData('/quote', { symbol: providerSymbol })
   ]);
-  const candles = parseTimeSeries(series, symbol);
-  if (!candles.length) throw new Error(`No candle data returned for ${symbol}`);
+  const candles = parseTimeSeries(series, providerSymbol);
+  if (!candles.length) throw new Error(`No candle data returned for ${providerSymbol}`);
   const price = Number(quote.close || quote.price || candles[candles.length - 1].close);
   const bid = Number(quote.bid || 0);
   const ask = Number(quote.ask || 0);
   return {
-    pair: symbol,
+    pair: providerSymbol,
     interval,
     price,
     spread: ask > 0 && bid > 0 ? Math.max(ask - bid, 0) : 0,

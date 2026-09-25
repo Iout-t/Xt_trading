@@ -12,6 +12,14 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MetaEnsembleApp(viewModel: MetaEnsembleViewModel) {
+    val quickPairs = listOf(
+        "BTCUSD" to "BTC/USD",
+        "EURUSD" to "EUR/USD",
+        "USDJPY" to "USD/JPY",
+        "GBPUSD" to "GBP/USD",
+        "USDAUD" to "USD/AUD",
+        "USDCAD" to "USD/CAD"
+    )
     val decision by viewModel.decision.collectAsState()
     val running by viewModel.running.collectAsState()
     val instruments by viewModel.instruments.collectAsState()
@@ -64,6 +72,28 @@ fun MetaEnsembleApp(viewModel: MetaEnsembleViewModel) {
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
+            }
+
+            item {
+                Text("Quick currency selection", style = MaterialTheme.typography.titleMedium)
+                quickPairs.forEach { (label, symbol) ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().clickable {
+                            viewModel.setSymbol(symbol)
+                            symbolDraft = symbol
+                        },
+                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedSymbol == symbol,
+                            onClick = {
+                                viewModel.setSymbol(symbol)
+                                symbolDraft = symbol
+                            }
+                        )
+                        Text("$label  ($symbol)")
+                    }
+                }
             }
 
             item {
