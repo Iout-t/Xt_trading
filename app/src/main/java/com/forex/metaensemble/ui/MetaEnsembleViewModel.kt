@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MetaEnsembleViewModel : ViewModel() {
-    private val client = LiveMarketClient(BuildConfig.SIGNAL_PROXY_URL)
+    private var client = LiveMarketClient(BuildConfig.SIGNAL_PROXY_URL)
     private val engine = MetaEnsembleEngine()
     private var loopJob: Job? = null
 
@@ -33,6 +33,9 @@ class MetaEnsembleViewModel : ViewModel() {
 
     private val _status = MutableStateFlow("Connecting to live market data…")
     val status: StateFlow<String> = _status
+
+    private val _proxyUrl = MutableStateFlow(BuildConfig.SIGNAL_PROXY_URL)
+    val proxyUrl: StateFlow<String> = _proxyUrl
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
@@ -59,6 +62,15 @@ class MetaEnsembleViewModel : ViewModel() {
     fun setSymbol(symbol: String) {
         val normalized = symbol.trim().uppercase()
         if (normalized.isNotBlank()) _selectedSymbol.value = normalized
+    }
+
+    fun setProxyUrl(url: String) {
+        val normalized = url.trim().trimEnd('/')
+        if (normalized.isBlank()) return
+        client = LiveMarketClient(normalized)
+        _proxyUrl.value = normalized
+        _status.value = "Proxy changed; tap Refresh symbols"
+        _error.value = null
     }
 
     fun evaluateOnce() {

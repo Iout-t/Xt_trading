@@ -83,3 +83,5 @@ Signals remain **analysis only**. The app does not connect to a broker, place or
 ### Android cleartext note
 
 The debug app currently permits cleartext traffic so an Android emulator can reach the local development proxy at `http://10.0.2.2:8787`. Use an HTTPS proxy URL for a physical device or production deployment and remove `android:usesCleartextTraffic="true"` from the manifest before a production release.
+
+On a physical Android phone, open the app’s **Signal proxy URL** field and enter the LAN URL of the computer running the backend, for example `http://192.168.1.25:8787`, then tap **Apply proxy URL**. The phone and computer must be on the same Wi-Fi network, and the backend must be running on `0.0.0.0:8787`.

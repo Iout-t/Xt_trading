@@ -16,9 +16,11 @@ fun MetaEnsembleApp(viewModel: MetaEnsembleViewModel) {
     val running by viewModel.running.collectAsState()
     val instruments by viewModel.instruments.collectAsState()
     val selectedSymbol by viewModel.selectedSymbol.collectAsState()
+    val proxyUrl by viewModel.proxyUrl.collectAsState()
     val status by viewModel.status.collectAsState()
     val error by viewModel.error.collectAsState()
     var symbolDraft by remember(selectedSymbol) { mutableStateOf(selectedSymbol) }
+    var proxyDraft by remember(proxyUrl) { mutableStateOf(proxyUrl) }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Xt Trading • Live Signals") }) }
@@ -38,6 +40,20 @@ fun MetaEnsembleApp(viewModel: MetaEnsembleViewModel) {
             item {
                 Text(status, style = MaterialTheme.typography.bodySmall)
                 error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
+            }
+
+            item {
+                OutlinedTextField(
+                    value = proxyDraft,
+                    onValueChange = { proxyDraft = it },
+                    label = { Text("Signal proxy URL") },
+                    supportingText = { Text("Emulator: 10.0.2.2:8787 • Phone: use your computer LAN IP") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedButton(onClick = { viewModel.setProxyUrl(proxyDraft); viewModel.refreshInstruments() }) {
+                    Text("Apply proxy URL")
+                }
             }
 
             item {
