@@ -89,5 +89,3 @@ class TwelveDataClient:
 
 def utc_now():
     return datetime.now(timezone.utc)
-EOF
-rm -f /home/ubuntu/Xt_trading/app/oanda.py
