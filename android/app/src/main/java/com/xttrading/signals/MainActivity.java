@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
 
     private void enqueueNow() {
         saveSettings();
+        output.setText("Checking " + pair.getSelectedItem().toString() + "…\nWaiting for the remote strategy backend.");
         WorkManager.getInstance(this).enqueueUniqueWork("signal-now", ExistingWorkPolicy.REPLACE,
                 new OneTimeWorkRequest.Builder(SignalWorker.class).setConstraints(networkConstraints()).build());
     }
